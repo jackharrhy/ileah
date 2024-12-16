@@ -22,6 +22,7 @@ defmodule ILeah.MixProject do
     [
       {:nostrum, "~> 0.10"},
       {:dotenvy, "~> 0.8.0"},
+      {:req, "~> 0.5.8"}
     ]
   end
 end
