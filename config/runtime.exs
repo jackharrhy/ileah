@@ -15,4 +15,4 @@ config :nostrum,
 
 config :ileah,
   elevenlabs_api_key: env!("ILEAH_ELEVENLABS_API_KEY", :string!),
-  owner_id: env!("ILEAH_OWNER_ID", :integer!)
+  owner_ids: env!("ILEAH_OWNER_IDS", :string!) |> String.split(",") |> Enum.map(&String.to_integer/1)

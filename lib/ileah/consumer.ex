@@ -10,8 +10,12 @@ defmodule ILeah.ExampleConsumer do
     Api.create_message(msg.channel_id, ya_prefix <> " blow up " <> ya_suffix)
   end
 
+  def is_permitted(msg) do
+    msg.author.id in Application.get_env(:ileah, :owner_ids)
+  end
+
   def leah_say(msg, text) do
-    if msg.author.id == Application.get_env(:ileah, :owner_id) do
+    if is_permitted(msg) do
       case Voice.text_to_speech(text) do
         %{status: 200, body: body} ->
           Api.create_message(msg.channel_id,
@@ -39,7 +43,11 @@ defmodule ILeah.ExampleConsumer do
   def handle_event({:MESSAGE_CREATE, msg, _ws_state}) do
     case msg.content do
       "blow up" ->
-        blow_up(msg)
+        if is_permitted(msg) do
+          :ignore
+        else
+          blow_up(msg)
+        end
 
       "leah say " <> text ->
         leah_say(msg, text)
