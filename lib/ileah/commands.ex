@@ -9,7 +9,8 @@ defmodule ILeah.Commands do
         :timer.sleep(1000)
         ensure_ready()
 
-      _user ->
+      user ->
+        Mix.shell().info("Logged in as: #{user.username}")
         :ok
     end
   end

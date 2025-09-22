@@ -22,6 +22,11 @@ defmodule ILeah.Bot do
     handle_message_component(custom_id, interaction)
   end
 
+  def handle_event({:READY, %{user: user}, _ws_state}) do
+    require Logger
+    Logger.info("Logged in as: #{user.username}")
+  end
+
   def handle_event({:MESSAGE_CREATE, msg, _ws_state}) do
     case msg.content do
       "blow up" ->
