@@ -41,12 +41,11 @@ defmodule ILeah.Bot do
   def blow_up(msg) do
     ya_prefix = String.duplicate("ya", Enum.random(3..5))
     ya_suffix = String.duplicate("ya", Enum.random(2..3))
-    Api.create_message(msg.channel_id, ya_prefix <> " blow up " <> ya_suffix)
+    Api.Message.create(msg.channel_id, ya_prefix <> " blow up " <> ya_suffix)
   end
 
-  def is_permitted(msg) do
-    msg.author.id in Application.get_env(:ileah, :owner_ids)
-  end
+  def is_permitted(%{author: %{id: id}}), do: id in Application.get_env(:ileah, :owner_ids)
+  def is_permitted(%{user: %{id: id}}), do: id in Application.get_env(:ileah, :owner_ids)
 
   defp handle_slash_command("leah-say", interaction) do
     LeahSay.handle(interaction)
@@ -60,7 +59,7 @@ defmodule ILeah.Bot do
       }
     }
 
-    Api.create_interaction_response(interaction, response)
+    Api.Interaction.create_response(interaction, response)
   end
 
   defp handle_message_component(custom_id, interaction) do
@@ -71,6 +70,6 @@ defmodule ILeah.Bot do
       }
     }
 
-    Api.create_interaction_response(interaction, response)
+    Api.Interaction.create_response(interaction, response)
   end
 end
