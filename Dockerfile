@@ -1,4 +1,8 @@
-FROM hexpm/elixir:1.17.3-erlang-27.2-alpine-3.20.3 AS builder
+ARG ELIXIR_VERSION=1.18.4
+ARG OTP_VERSION=28.0.2
+ARG DEBIAN_VERSION=bookworm-20250721-slim
+
+ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
 
 RUN apk add --no-cache git
 
