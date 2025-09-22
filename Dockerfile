@@ -1,8 +1,11 @@
 ARG ELIXIR_VERSION=1.18.4
 ARG OTP_VERSION=28.0.2
-ARG DEBIAN_VERSION=bookworm-20250721-slim
+ARG OS_VERSION=alpine-3.22.1
 
-ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
+ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-${OS_VERSION}"
+ARG RUNTIME_IMAGE="hexpm/erlang:${OTP_VERSION}-${OS_VERSION}"
+
+FROM ${BUILDER_IMAGE} AS builder
 
 RUN apk add --no-cache git
 
@@ -20,7 +23,7 @@ COPY config ./config
 RUN mix do compile
 RUN mix release
 
-FROM hexpm/erlang:27.2-alpine-3.20.3
+FROM ${RUNTIME_IMAGE}
 
 WORKDIR /app
 
